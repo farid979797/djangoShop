@@ -42,10 +42,19 @@
 {% for c in cats %}
 	{% if c.pk == cat_selected %}
 		<li class="selected">{{c.name}}</li>
+		{% for subcat in subcats %}
+			<li style="margin-left: 25px;"><a href="{{ subcat.get_absolute_url }}">   >{{subcat.name}}</a></li>
+		{% endfor %}
 	{% else %}
 		<li><a href="{{ c.get_absolute_url }}">{{c.name}}</a></li>
 	{% endif %}
 {% endfor %}
+
+<!--{% for category in categories %}-->
+<!--    {% for subcategory in category.category_set.all %}-->
+<!--        {{ subcategory }}-->
+<!--    {% endfor %}-->
+<!--{% endfor %}-->
 
 		</li>
 	</ul>

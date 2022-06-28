@@ -27,6 +27,7 @@ class Product(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True, verbose_name="Категория")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+    parent_category = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name

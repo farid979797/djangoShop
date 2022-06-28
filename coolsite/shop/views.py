@@ -24,7 +24,7 @@ class ShopMain(DataMixin, ListView):
 
     def get_queryset(self):
         print(Product.objects.filter(is_published=True).select_related('cat'))
-        return Product.objects.filter(is_published=True).select_related('cat')
+        return Product.objects.filter(is_published=True)
 
 class ShowProduct(DataMixin, DetailView):
     model = Product
@@ -41,11 +41,12 @@ class ShowProduct(DataMixin, DetailView):
 class ProductCategory(DataMixin, ListView):
     model = Product
     template_name = 'shop/index.html'
-    context_object_name = 'product'
-    allow_empty = False
+    context_object_name = 'products'
+    #allow_empty = False
 
     def get_queryset(self):
-        return Product.objects.filter(cat__slug=self.kwargs['cat_slug']).select_related('cat')
+        print(Product.objects.filter(cat__slug=self.kwargs['cat_slug']))
+        return Product.objects.filter(cat__slug=self.kwargs['cat_slug'])
 
     def get_context_data(self, *, object_list=None, **kwargs):  #для передачи динамических данных
         context = super().get_context_data(**kwargs)
