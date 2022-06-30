@@ -1,9 +1,8 @@
 from .models import *
 
-menu = [{'title': "О сайте", 'url_name': 'about'},
-        {'title': "Добавить объявление", 'url_name': 'add_page'},
-        {'title': "Обратная связь", 'url_name': 'contact'},
-        {'title': "Войти", 'url_name': 'contact'},
+menu = [{'title': "О сайте", 'url_name': 'home'},
+        {'title': "Добавить объявление", 'url_name': 'home'},
+        {'title': "Обратная связь", 'url_name': 'home'},
 ]
 
 class DataMixin:

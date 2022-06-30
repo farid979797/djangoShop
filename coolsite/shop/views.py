@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import RegisterUserForm, LoginUserForm
 from .models import *
 from .utils import DataMixin
 
@@ -46,7 +47,6 @@ class ProductCategory(DataMixin, ListView):
     #allow_empty = False
 
     def get_context_data(self, *, object_list=None, **kwargs):  #для передачи динамических данных
-        print('get_context')
         context = super().get_context_data(**kwargs)
         c = Category.objects.get(slug=self.kwargs['cat_slug'])
         c_def = self.get_user_context(title='Категория - ' + str(c.name),
@@ -55,13 +55,38 @@ class ProductCategory(DataMixin, ListView):
         return context
 
     def get_queryset(self, object_list=None, **kwargs):
-        print('get_query')
         c = Category.objects.get(slug=self.kwargs['cat_slug'])
         if c.parent_category is None:
-            print('parent')
             return Product.objects.filter(Q(cat__parent_category=c.pk) | (Q(pk=c.pk)))
         else:
-            print('not parent')
             return Product.objects.filter(cat__slug=self.kwargs['cat_slug'])
 
 
+class RegisterUser(DataMixin, CreateView):
+    form_class = RegisterUserForm                           #in forms.py
+    template_name = 'shop/register.html'
+    #success_url = reverse_lazy('login')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Регистрация')
+        context.update(c_def)
+        return context
+
+def logout_user(request):
+    logout(request)
+    return redirect('home')
+
+
+class LoginUser(DataMixin, LoginView):
+    form_class = LoginUserForm
+    template_name = 'shop/login.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Авторизация')
+        context.update(c_def)
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('home')
