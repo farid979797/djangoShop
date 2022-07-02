@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название")
@@ -23,6 +25,19 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product', kwargs={'product_slug': self.slug})
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True)
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото")
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True, verbose_name="Категория")

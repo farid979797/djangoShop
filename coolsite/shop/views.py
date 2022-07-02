@@ -90,3 +90,16 @@ class LoginUser(DataMixin, LoginView):
 
     def get_success_url(self):
         return reverse_lazy('home')
+
+
+class Profile(DataMixin, DetailView):
+    model = User
+    template_name = 'shop/profile.html'
+    pk_url_kwarg = 'user_id'
+    context_object_name = 'profile'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(name=context['profile'])
+        context.update(c_def)
+        return context
