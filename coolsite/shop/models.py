@@ -6,6 +6,8 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_extensions.db.fields import AutoSlugField
+import string
+import random
 
 class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название")
@@ -33,11 +35,9 @@ class Profile(models.Model):
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото")
     city = models.ForeignKey('City', on_delete=models.PROTECT, verbose_name="Город", default=1)
     balance = models.IntegerField(verbose_name="Баланс", default=0)
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=str(User.username))
-
 
     def get_absolute_url(self):
-        return reverse('profile', kwargs={'profile_slug': self.slug})
+        return reverse('profile', kwargs={'profile_id': self.pk})
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

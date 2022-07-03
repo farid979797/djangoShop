@@ -15,7 +15,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', )
 
 class ProfileAdmin(admin.ModelAdmin):\
-    list_display = ('id', 'bio', 'photo', 'user_id', 'city_id', 'slug', 'balance')
+    list_display = ('id', 'bio', 'photo', 'user_id', 'city_id', 'balance')
 
 
 admin.site.register(Product, ProductAdmin)

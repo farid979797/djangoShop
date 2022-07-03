@@ -65,7 +65,7 @@ class ProductCategory(DataMixin, ListView):
 class RegisterUser(DataMixin, CreateView):
     form_class = RegisterUserForm                           #in forms.py
     template_name = 'shop/register.html'
-    #success_url = reverse_lazy('login')
+    success_url = reverse_lazy('login')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -95,8 +95,7 @@ class LoginUser(DataMixin, LoginView):
 class Profile(DataMixin, DetailView):
     model = Profile
     template_name = 'shop/profile.html'
-    slug_url_kwarg = 'profile_slug'
-    #pk_url_kwarg = 'user_id'
+    pk_url_kwarg = 'profile_id'
     context_object_name = 'profile'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -110,3 +109,18 @@ def purchase(request, product_id, product_slug):
     p.save()
     Product.objects.filter(pk=product_id).update(count=F('count') - 1)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class PurchasesHistory(DataMixin, ListView):
+    model = Purchases
+    template_name = 'shop/purchase_history.html'
+    context_object_name = 'purchases'
+
+    def get_context_data(self, *, object_list=None, **kwargs):  #для передачи динамических данных
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='История покупок')
+        context.update(c_def)
+        return context
+
+    def get_queryset(self):
+        return Purchases.objects.filter(user=self.request.user.id)

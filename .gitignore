@@ -125,3 +125,4 @@ coolsite/settings.py
 .dmypy.json
 dmypy.json
 /coolsite/shop/static/shop/images/
+/coolsite/shop/migrations/
