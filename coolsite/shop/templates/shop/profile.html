@@ -1,13 +1,20 @@
 {% extends 'shop/base.html' %}
-
+<title>{{user.username}}</title>
 {% block content %}
+
 <h1>{{user.username}}</h1>
 
-{% if product.photo %}
-<p><img class="img-article-left" src="{{product.photo.url}}"></p>
+{% if user.profile.photo %}
+<p><img class="img-article-left" src="{{user.profile.photo.url}}"></p>
 {% endif %}
+  <li style="margin-left: 25px;">Имя: {{ user.first_name }}</li>
+  <li style="margin-left: 25px;">Фамилия: {{ user.second_name }}</li>
+  <li style="margin-left: 25px;">Регистрация: {{ user.date_joined }}</li>
+  <li style="margin-left: 25px;">Имя пользователя: {{ user.username }}</li>
+  <li style="margin-left: 25px;">Местоположение: {{ user.profile.city }}</li>
+  <li style="margin-left: 25px;">Баланс: {{ user.profile.balance }}</li>
 
-{{product.description|linebreaks}}
+{{profile.bio|linebreaks}}
 <!--<h1>Цена: {{product.price}} </h1>-->
 
 {% endblock %}

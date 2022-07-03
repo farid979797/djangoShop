@@ -93,13 +93,15 @@ class LoginUser(DataMixin, LoginView):
 
 
 class Profile(DataMixin, DetailView):
-    model = User
+    model = Profile
     template_name = 'shop/profile.html'
-    pk_url_kwarg = 'user_id'
+    slug_url_kwarg = 'profile_slug'
+    #pk_url_kwarg = 'user_id'
+
     context_object_name = 'profile'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(name=context['profile'])
+        c_def = self.get_user_context(title='Профиль - ' + str(self.request.user))
         context.update(c_def)
         return context

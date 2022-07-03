@@ -14,7 +14,11 @@ class CityAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', )
 
+class ProfileAdmin(admin.ModelAdmin):\
+    list_display = ('id', 'bio', 'photo', 'user_id', 'city_id', 'slug', 'balance')
+
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(City, CityAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Profile, ProfileAdmin)

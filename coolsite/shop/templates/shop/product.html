@@ -8,6 +8,9 @@
 {% endif %}
 
 {{product.description|linebreaks}}
-<h1>Цена: {{product.price}} $$$$</h1>
+  <li style="margin-left: 25px;">Город: {{ product.city }}</li>
+  <li style="margin-left: 25px;">Количество: {{ product.count }}</li>
+  <li style="margin-left: 25px;">Продавец: {{ product.owner_id }}</li>
+  <li style="font-weight:bold;">Цена: {{ product.price }}</li>
 
 {% endblock %}
