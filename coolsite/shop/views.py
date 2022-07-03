@@ -1,8 +1,8 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
-from django.db.models import Q
-from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.db.models import Q, F
+from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
@@ -97,7 +97,6 @@ class Profile(DataMixin, DetailView):
     template_name = 'shop/profile.html'
     slug_url_kwarg = 'profile_slug'
     #pk_url_kwarg = 'user_id'
-
     context_object_name = 'profile'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -105,3 +104,9 @@ class Profile(DataMixin, DetailView):
         c_def = self.get_user_context(title='Профиль - ' + str(self.request.user))
         context.update(c_def)
         return context
+
+def purchase(request, product_id, product_slug):
+    p = Purchases(user_id=request.user.id, product_id=product_id)
+    p.save()
+    Product.objects.filter(pk=product_id).update(count=F('count') - 1)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

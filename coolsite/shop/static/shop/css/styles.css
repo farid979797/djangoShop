@@ -41,6 +41,14 @@ p.link-read-post a {
 	text-decoration: none;
 }
 
+input.purchase {
+	padding: 10px;
+	min-width: 100px;
+	background: #333671;
+	color: #fff;
+	text-decoration: none;
+}
+
 div.article-panel {
     background: #eee;
     padding: 5px 10px 5px 10px;

@@ -1,9 +1,11 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django_extensions.db.fields import AutoSlugField
 
 class Product(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название")
@@ -29,7 +31,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото")
-    city = models.ForeignKey('City', on_delete=models.PROTECT, verbose_name="Город", default=None)
+    city = models.ForeignKey('City', on_delete=models.PROTECT, verbose_name="Город", default=1)
     balance = models.IntegerField(verbose_name="Баланс", default=0)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", default=str(User.username))
 

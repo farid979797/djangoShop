@@ -13,4 +13,8 @@
   <li style="margin-left: 25px;">Продавец: {{ product.owner_id }}</li>
   <li style="font-weight:bold;">Цена: {{ product.price }}</li>
 
+<form action="{{product.id}}/purchase" method="post">
+{% csrf_token %}
+<input type="submit" class="purchase" value="Купить" name="purchase">
+</form>
 {% endblock %}

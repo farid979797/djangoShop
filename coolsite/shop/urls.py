@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('login/', LoginUser.as_view(), name='login'),
     path('profile/<slug:profile_slug>/', Profile.as_view(), name='profile'),
+    path('product/<slug:product_slug>/<int:product_id>/purchase', purchase, name='purchase'),
 ]
