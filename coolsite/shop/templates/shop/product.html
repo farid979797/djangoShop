@@ -13,8 +13,12 @@
   <li style="margin-left: 25px;">Продавец: {{ product.owner_id }}</li>
   <li style="font-weight:bold;">Цена: {{ product.price }}</li>
 
+{% if product.count > 0 %}
 <form action="{{product.id}}/purchase" method="post">
 {% csrf_token %}
 <input type="submit" class="purchase" value="Купить" name="purchase">
 </form>
+{% else %}
+<li style="font-weight:bold;">Товара нет в наличии</li>
+{% endif %}
 {% endblock %}

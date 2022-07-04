@@ -4,7 +4,8 @@
 <ul class="list-articles">
 	{% for p in purchases %}
 			<li><div class="article-panel">
-	<p class="last" style="margin-left: 50px;">Цена: {{p.product.price}} грн </p>
+	<p class="last" style="margin-left: 50px;">Цена: {{p.product.price}} </p>
+	<p class="last" style="margin-left: 50px;">Дата покупки: {{p.time_update}} </p>
 </div>
 
 {% if p.product.photo %}

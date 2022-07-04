@@ -71,3 +71,4 @@ class City(models.Model):
 class Purchases(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='купил', verbose_name='купил')
     product = models.ForeignKey('Product', on_delete=models.PROTECT, verbose_name="Товар")
+    time_update = models.DateTimeField(auto_now=True, verbose_name="Время покупки")
