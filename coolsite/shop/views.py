@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import RegisterUserForm, LoginUserForm
+from .forms import RegisterUserForm, LoginUserForm, AddProductForm
 from .models import *
 from .utils import DataMixin
 
@@ -124,3 +124,19 @@ class PurchasesHistory(DataMixin, ListView):
 
     def get_queryset(self):
         return Purchases.objects.filter(user=self.request.user.id)
+
+class AddProduct(LoginRequiredMixin, DataMixin, CreateView):                                 # @login_required если функции представления
+    form_class = AddProductForm
+    template_name = 'shop/addproduct.html'
+    success_url = reverse_lazy('home')
+    login_url = reverse_lazy('home')
+    raise_exception = True
+
+    def get_context_data(self, *, object_list=None, **kwargs):  #для передачи динамических данных
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Добавление объявление')
+        context.update(c_def)
+        return context
+
+    def get_initial(self):
+        return {'owner': self.request.user.id}

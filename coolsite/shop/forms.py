@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
+from shop.models import Product
 
 
 class RegisterUserForm(UserCreationForm):
@@ -16,3 +19,26 @@ class RegisterUserForm(UserCreationForm):
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+
+
+class AddProductForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['owner'].disabled = True
+        self.fields['cat'].empty_label = "Категория не выбрана"
+
+    class Meta:
+        model = Product
+        fields = ['name', 'owner', 'photo', 'description', 'cat', 'count', 'city', 'price', 'is_published', 'slug']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-input'}),
+            'description': forms.Textarea(attrs={'cols': 60, 'rows': 10}),
+            'owner': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def clean_title(self):
+        title = self.cleaned_data['name']
+        if len(title) > 200:
+            raise ValidationError('Длина превышает 200 символов')
+
+        return title
