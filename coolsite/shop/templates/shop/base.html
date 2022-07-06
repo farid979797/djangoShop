@@ -20,6 +20,7 @@
 {% endfor %}
 				{% if request.user.is_authenticated %}
 				<li class="last"> <a href="{{ user.profile.get_absolute_url }}">{{user.username}} </a> | <a href="{% url 'logout' %}">Выйти</a></li>
+					<li class="last">{{user.profile.balance}} $</li>
 				{% else %}
 				<li class="last"> <a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
 				{% endif %}
